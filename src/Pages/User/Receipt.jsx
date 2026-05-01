@@ -1,15 +1,16 @@
-import { OrderContext } from "../Contexts/OrderContext";
-import { PageContext } from "../Contexts/PageContext";
+import { OrderContext } from "../../Contexts/OrderContext";
+import { PageContext } from "../../Contexts/PageContext";
 import { useContext } from "react";
-import left_arrow from '../assets/icons/left-arrow.png';
+import left_arrow from '../../assets/icons/left-arrow.png';
 
 function Receipt() {
 
-    const{ paidOrderList, selectedPayment, orderIndex } = useContext(OrderContext);
+    const { paidOrderList, orderIndex } = useContext(OrderContext);
     const { currentPage, navigateTo, previousPage } = useContext(PageContext);
 
-    const totalPrice = paidOrderList[orderIndex]?.indivOrders.reduce((acc, orders) => {
-        const { price, quantity } = orders;
+    const currentOrder = paidOrderList[orderIndex]; //problem indexing
+
+    const totalPrice = currentOrder?.indivOrders.reduce((acc, { price, quantity }) => {
         return acc + (price * quantity);
     }, 0);
 
@@ -17,21 +18,19 @@ function Receipt() {
         <div 
             className={`
                 p-8 bg-login-100 rounded-xl md:h-[calc(100vh-4rem)] h-[calc(100vh-7rem)]
-                ${currentPage === "Receipt" ? "flex" : "hidden"} overflow-y-auto
+                ${currentPage === "User-Receipt" ? "flex" : "hidden"} overflow-y-auto
                 items-start justify-center 
             `}
         >
-
             <div className="
                 bg-white rounded-xl border-2 border-gray-200 p-6 w-full 
                 max-w-[360px] flex flex-col items-center gap-4 relative
                 shadow-xl" 
             >
-
                 <img 
                     src={left_arrow} 
                     alt="back" 
-                    className="w-5 absolute left-2 top-3"
+                    className="w-5 absolute left-2 top-3 cursor-pointer"
                     onClick={() => navigateTo(previousPage)}
                 />
                 
@@ -49,7 +48,7 @@ function Receipt() {
                     </svg>
                     <p className="text-lg font-semibold">Unitrack — Order Receipt</p>
                     <span className="bg-blue-100 text-blue-600 text-xs font-medium px-4 py-1 rounded-full">
-                        ORD-2026-0042
+                        ORD-2026-{String(orderIndex + 1).padStart(4, '0')}
                     </span>
                 </div>
 
@@ -65,12 +64,12 @@ function Receipt() {
                     </div>
                     <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Date</span>
-                        <span>{paidOrderList[orderIndex]?.date}</span>
+                        <span>{currentOrder?.date}</span>
                     </div>
                 </div>
 
                 {/* Items */} 
-                {paidOrderList[orderIndex]?.indivOrders.map(({ name, selectedSize, price, quantity }, index) => (
+                {currentOrder?.indivOrders.map(({ name, selectedSize, price, quantity }, index) => (
                     <div 
                         key={index}
                         className="w-full border-gray-200 flex flex-col gap-2"
@@ -90,13 +89,17 @@ function Receipt() {
                     </div>
                     <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Payment</span>
-                        <span>{selectedPayment}</span>
+                        <span>{currentOrder?.payment}</span>
                     </div>
                 </div>
 
                 {/* Status */}
-                <span className="bg-green-500 text-white text-xs font-medium px-5 py-1 rounded-full">
-                    Ready for Pickup
+                <span className={`text-xs font-medium px-5 py-1 rounded-full ${
+                    currentOrder?.status === "Ready for Pickup"
+                        ? "bg-green-500 text-white"
+                        : "bg-blue-100 text-blue-600"
+                }`}>
+                    {currentOrder?.status}
                 </span>
 
                 <p className="text-xs text-gray-400">Thank you for your order!</p>

@@ -1,18 +1,24 @@
-// import Login from "./Pages/Login"
-import MainPage from "./Pages/MainPage";
+import Login from "./Pages/User/Login"
+import MainPage from "./Pages/User/MainPage";
+import { LoginContextProvider } from "./Contexts/LoginContext";
 import { OrderContextProvider } from "./Contexts/OrderContext";
 import { PageContextProvider } from "./Contexts/PageContext";
+import { InventoryContextProvider } from "./Contexts/InventoryContext";
 
 function App() {
  
   return (
     <>
-      <PageContextProvider>
-        <OrderContextProvider>
-          {/* <Login/> */}
-          <MainPage />
-        </OrderContextProvider>
-      </PageContextProvider>
+      <InventoryContextProvider>
+        <LoginContextProvider>
+          <PageContextProvider>
+            <OrderContextProvider>
+              <Login/>
+              <MainPage />
+            </OrderContextProvider>
+          </PageContextProvider>
+        </LoginContextProvider>
+      </InventoryContextProvider>
     </>
   )
 }

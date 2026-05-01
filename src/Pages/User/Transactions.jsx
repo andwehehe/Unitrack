@@ -1,5 +1,5 @@
-import { OrderContext } from "../Contexts/OrderContext";
-import { PageContext } from "../Contexts/PageContext";
+import { OrderContext } from "../../Contexts/OrderContext";
+import { PageContext } from "../../Contexts/PageContext";
 import { useContext } from "react";
 
 function Transactions() {
@@ -8,7 +8,7 @@ function Transactions() {
 
     return (
         <div className={`
-            ${currentPage === "Transactions" ? "flex" : "hidden"} flex-col
+            ${currentPage === "User-Transactions" ? "flex" : "hidden"} flex-col
             bg-login-100 overflow-y-auto h-[calc(100vh-7.5rem)] lg:h-[calc(100vh-4rem)]
             items-center
         `}>
@@ -35,7 +35,7 @@ function Transactions() {
                     </div>
 
                     <button
-                        onClick={() => navigateTo("Uniforms")}
+                        onClick={() => navigateTo("User-Uniforms")}
                         className="
                             w-full max-w-[260px] py-2 rounded-lg border-2 border-gray-300 font-semibold
                             text-sm text-gray-500 hover:border-blue-400 hover:text-blue-400 transition
@@ -115,7 +115,7 @@ function Transactions() {
                                     </tbody>
                                     <tfoot>
                                         <tr className="border-t-2 border-gray-200">
-                                            <td colSpan="4" className="py-2 font-semibold text-right pr-12">Total</td>
+                                            <td colSpan="4" className="py-2 font-semibold text-left">Total</td>
                                             <td className="py-2 font-semibold">
                                                 ₱{order.indivOrders.reduce((acc, { price, quantity }) => 
                                                     acc + (price * quantity), 0
@@ -131,7 +131,7 @@ function Transactions() {
                                         className="text-blue-500 text-sm underline"
                                         onClick={() => {
                                             setOrderIndex(index);
-                                            navigateTo("Receipt");
+                                            navigateTo("UserReceipt");
                                         }}
                                     >
                                         View Receipt

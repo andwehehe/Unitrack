@@ -1,10 +1,10 @@
-import gcash from '../assets/icons/gcash.png';
-import paymaya from '../assets/icons/paymaya.png';
-import paypal from '../assets/icons/paypal.svg';
-import cc from '../assets/icons/cc.png';
-import empty from '../assets/icons/empty-cart.png';
-import { OrderContext } from '../Contexts/OrderContext';
-import { PageContext } from '../Contexts/PageContext';
+import gcash from '../../assets/icons/gcash.png';
+import paymaya from '../../assets/icons/paymaya.png';
+import paypal from '../../assets/icons/paypal.svg';
+import cc from '../../assets/icons/cc.png';
+import empty from '../../assets/icons/empty-cart.png';
+import { OrderContext } from '../../Contexts/OrderContext';
+import { PageContext } from '../../Contexts/PageContext';
 import { useContext } from 'react';
 
 function Cart() {
@@ -26,9 +26,10 @@ function Cart() {
     };
 
     const handlePlaceOrder = () => {
-        navigateTo("Receipt");
+        navigateTo("User-Receipt");
         addToPaid();
         setOrderList([]);
+        setSelectedPayment(null);
     }
 
     return(
@@ -37,7 +38,7 @@ function Cart() {
             <section className={`
                 h-screen w-full px-6 py-4 bg-login-100 flex 
                 flex-col items-center justify-start gap-3 
-                ${currentPage === "Cart" ? "flex" : "hidden"}
+                ${currentPage === "User-Cart" ? "flex" : "hidden"}
                 ${orderList.length > 0 ? "flex" : "hidden"}
                 overflow-y-auto pb-[10rem] 
             `}>
@@ -140,7 +141,7 @@ function Cart() {
                     </button>
 
                     <button
-                        onClick={() => navigateTo("Uniforms")}
+                        onClick={() => navigateTo("User-Uniforms")}
                         className="
                             py-2 rounded-lg text-sm font-medium border-2 border-gray-300
                             hover:border-blue-400 hover:text-blue-400 transition 
@@ -155,7 +156,7 @@ function Cart() {
             {/* Empty Cart */}
             <div className={`
                 flex flex-col w-full h-[calc(100vh-10rem)] justify-center items-center 
-                p-12 overflow-y-scroll ${currentPage === "Cart" ? "flex" : "hidden"}
+                p-12 overflow-y-scroll ${currentPage === "User-Cart" ? "flex" : "hidden"}
                 ${orderList.length <= 0 ? "block" : "hidden"} bg-login-100 h-screen
                 pb-[10rem]
             `}>
@@ -173,7 +174,7 @@ function Cart() {
                 </div>
 
                 <button
-                    onClick={() => navigateTo("Uniforms")}
+                    onClick={() => navigateTo("User-Uniforms")}
                     className="
                         py-2 rounded-lg text-sm font-medium border-2 border-gray-300
                         hover:border-blue-400 hover:text-blue-400 transition 

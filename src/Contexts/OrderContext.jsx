@@ -8,7 +8,7 @@ export function OrderContextProvider({ children }) {
     const [ orderList, setOrderList ] = useState([]);
     const [ paidOrderList, setPaidOrderList ] = useState([]);
     const [ selectedPayment, setSelectedPayment ] = useState(null);
-    const [ orderIndex, setOrderIndex ] = useState(0);
+    const [ orderIndex, setOrderIndex ] = useState(0); 
     const [ orderStatus, setOrderStatus ] = useState("Ready for Pickup");
 
     const now = new Date();
@@ -27,9 +27,19 @@ export function OrderContextProvider({ children }) {
 
     const addToPaid = () => {
         setPaidOrderList(prev => {
-            return [...prev, {indivOrders:[...orderList], payment: selectedPayment, date: formatted, status: orderStatus}]
+            const newList = [...prev, {
+                indivOrders: [...orderList], 
+                payment: selectedPayment, 
+                date: formatted, 
+                status: orderStatus
+            }];
+            setOrderIndex(newList.length - 1);
+            return newList;
         });
-    }
+
+        setOrderList([]);
+        setSelectedPayment(null);
+    };
 
     return(
         <OrderContext.Provider 

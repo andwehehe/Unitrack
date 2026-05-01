@@ -5,7 +5,7 @@ export const PageContext = createContext();
 
 export function PageContextProvider({ children }) {
 
-    const [currentPage, setCurrentPage] = useState("Dashboard");
+    const [currentPage, setCurrentPage] = useState("Login");
     const [previousPage, setPreviousPage] = useState(null);
 
     const navigateTo = (page) => {

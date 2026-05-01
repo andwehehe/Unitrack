@@ -1,16 +1,17 @@
 import { useContext } from "react";
-import { OrderContext } from "../Contexts/OrderContext";
-import { PageContext } from "../Contexts/PageContext";
-import uniforms from "../data/uniforms.json";
+import { OrderContext } from "../../Contexts/OrderContext";
+import { PageContext } from "../../Contexts/PageContext";
+import { InventoryContext } from "../../Contexts/InventoryContext";
 
 function Dashboard() {
 
     const { paidOrderList, orderList } = useContext(OrderContext);
     const { currentPage, navigateTo } = useContext(PageContext);
+    const { uniforms } = useContext(InventoryContext);
 
     const totalCartPrice = orderList.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     const activeOrders = paidOrderList.filter(order => order.status === "Ready for Pickup").length;
-    const recentOrders = paidOrderList.slice(-3).reverse();
+    const recentOrders = paidOrderList.slice(-6).reverse();
 
     const lowStockItems = uniforms.filter(uniform => 
         (uniform.course === "ICT" || uniform.course === "General") &&
@@ -72,7 +73,7 @@ function Dashboard() {
 
     return (
         <div className={`
-            ${currentPage === "Dashboard" ? "flex" : "hidden"} flex-col
+            ${currentPage === "User-Dashboard" ? "flex" : "hidden"} flex-col
             bg-login-100 overflow-y-auto h-[calc(100vh-7.5rem)] 
             lg:h-[calc(100vh-4rem)] p-6 gap-6
         `}>
@@ -110,12 +111,12 @@ function Dashboard() {
                 {/* Recent Orders */}
                 <div className="
                     bg-white border-2 border-gray-200 rounded-xl 
-                    p-4 flex flex-col gap-3 flex-1
+                    p-4 flex flex-col gap-3 flex-1 overflow-y-auto
                 ">
                     <div className="flex items-center justify-between">
                         <h2 className="font-semibold text-base">Recent Orders</h2>
                         <button 
-                            onClick={() => navigateTo("Transactions")}
+                            onClick={() => navigateTo("User-Transactions")}
                             className="text-blue-500 text-sm"
                         >
                             View All
@@ -212,7 +213,7 @@ function Dashboard() {
 
             {/* Browse Button */}
             <button
-                onClick={() => navigateTo("Uniforms")}
+                onClick={() => navigateTo("User-Uniforms")}
                 className="
                     w-full lg:w-fit py-2 px-6 rounded-lg border-2 border-blue-400 
                     text-blue-500 text-sm font-medium hover:bg-blue-50 transition
