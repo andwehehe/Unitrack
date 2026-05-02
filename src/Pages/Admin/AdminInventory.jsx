@@ -7,6 +7,7 @@ function AdminInventory() {
 
     const { uniforms, updateStock, updatePrice } = useContext(InventoryContext);
     const { currentPage } = useContext(PageContext);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     const [searchFilter, setSearchFilter] = useState("");
     const [selectedCourse, setSelectedCourse] = useState("All");
@@ -64,33 +65,143 @@ function AdminInventory() {
         `}>
             <h1 className="text-2xl font-bold">Inventory Management</h1>
 
-            {/* Search & Filter */}
-            <div className="flex flex-col lg:flex-row gap-3">
+            {/* Mobile Filter */}
+            <article className='block lg:hidden'>
                 <label className="
-                    flex items-center gap-2 border-2 py-1 pl-4 rounded-full
-                    bg-white focus-within:border-blue-400 flex-1
+                    flex items-center gap-2 w-full border-2 py-1 pl-4 my-2 rounded-full
+                    bg-login-100 focus-within:border-button_primary
                 ">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                        width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" 
+                        strokeLinejoin="round"
+                    >
                         <circle cx="11" cy="11" r="8"/>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
                     <input
                         type="text"
                         placeholder="Search uniforms..."
-                        className="bg-transparent focus:outline-none w-full text-sm py-1"
+                        className="
+                            bg-transparent focus:outline-none w-full text-sm
+                        "
                         onChange={(e) => setSearchFilter(e.target.value)}
                     />
                 </label>
 
-                <select
-                    className="border-2 rounded-full px-4 py-2 text-sm bg-white focus:outline-none focus:border-blue-400"
-                    onChange={(e) => setSelectedCourse(e.target.value)}
+                <div className='text-sm'>
+                    <p className='text-clr_description mb-2'>Filter (Course): </p>
+
+                    <div className="flex flex-wrap gap-2 justify-center">
+                        {courses.map(course => {
+                            return(
+                                <label
+                                    key={course}
+                                    className={`
+                                        flex items-center gap-2 cursor-pointer 
+                                        py-[4px] px-3 rounded-full text-sm border 
+                                        transition
+                                    ${
+                                        selectedCourse === course
+                                        ? "bg-blue-500 text-white border-blue-500"
+                                        : "bg-login-100 text-black border-gray-200"
+                                    }`}
+                                >
+                                    <input
+                                        type="radio"
+                                        name="course"
+                                        value={course}
+                                        checked={selectedCourse === course}
+                                        onChange={() => setSelectedCourse(course)}
+                                        className="hidden"
+                                    />
+                                    {course}
+                                </label>
+                            );
+                        })}
+                    </div>
+                </div>
+            </article>
+
+            {/* Search & Filter */}
+            <article className='pt-4 flex items-center gap-4 hidden lg:flex'>
+            {/* Search */}
+            <p className="text-clr_description text-lg hidden lg:block">Search: </p>
+            <label className="
+                flex items-center gap-2 border-2 py-1 pl-4 rounded-full
+                bg-white focus-within:border-blue-400 flex-1 hidden lg:flex
+            ">
+                
+                <svg 
+                    width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" 
+                    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                 >
-                    {courses.map(course => (
-                        <option key={course} value={course}>{course}</option>
-                    ))}
-                </select>
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input
+                    type="text"
+                    placeholder="Search uniforms..."
+                    className="bg-transparent focus:outline-none text-sm py-1 w-full"
+                    onChange={(e) => setSearchFilter(e.target.value)}
+                />
+            </label>
+
+            {/* Filter */}
+            <div className='text-sm gap-4 flex items-center'>
+                <p className="text-clr_description text-lg">Filter:</p>
+
+                <section className="relative flex">
+                    <div
+                        className="
+                            bg-white rounded-lg border-2 py-[4px]
+                            px-3 flex justify-between items-center
+                            cursor-pointer gap-3
+                        "
+                        onClick={() => setIsFilterOpen(prev => !prev)}
+                    >
+                        <span className="w-[135px] text-sm">{selectedCourse}</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+
+                    <div className={`
+                        flex flex-col justify-center absolute mt-10 
+                        bg-white rounded-lg border-2 overflow-hidden 
+                        w-[175px] z-10
+                        ${isFilterOpen ? "flex" : "hidden"}
+                    `}>
+                        {courses.map(course => (
+                            <label
+                                key={course}
+                                className={`
+                                    flex items-center gap-2 cursor-pointer 
+                                    py-[4px] px-3 text-sm transition
+                                    ${selectedCourse === course
+                                        ? "bg-blue-500 text-white"
+                                        : "bg-white text-black hover:bg-gray-50"
+                                    }
+                                `}
+                            >
+                                <input
+                                    type="radio"
+                                    name="admin-course"
+                                    value={course}
+                                    checked={selectedCourse === course}
+                                    onChange={() => {
+                                        setSelectedCourse(course);
+                                        setIsFilterOpen(false);
+                                    }}
+                                    className="hidden"
+                                />
+                                {course}
+                            </label>
+                        ))}
+                    </div>
+                </section>
             </div>
+        </article>
 
             {/* Grid */}
             <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4 pb-6">

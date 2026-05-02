@@ -131,7 +131,7 @@ function Transactions() {
                                         className="text-blue-500 text-sm underline"
                                         onClick={() => {
                                             setOrderIndex(index);
-                                            navigateTo("UserReceipt");
+                                            navigateTo("User-Receipt");
                                         }}
                                     >
                                         View Receipt

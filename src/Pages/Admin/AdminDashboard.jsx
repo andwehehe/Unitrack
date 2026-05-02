@@ -6,7 +6,7 @@ import { LoginContext } from "../../Contexts/LoginContext";
 
 function AdminDashboard() {
 
-    const { paidOrderList, setPaidOrderList } = useContext(OrderContext);
+    const { paidOrderList } = useContext(OrderContext);
     const { currentPage, navigateTo } = useContext(PageContext);
     const { logout } = useContext(LoginContext);
     const { uniforms } = useContext(InventoryContext);
@@ -33,12 +33,6 @@ function AdminDashboard() {
     );
 
     const recentOrders = paidOrderList.slice(-5).reverse();
-
-    const markAsIssued = (index) => {
-        setPaidOrderList(prev => prev.map((order, i) =>
-            i === index ? { ...order, status: "Issued" } : order
-        ));
-    };
 
     const stats = [
         {
