@@ -28,9 +28,7 @@ function Uniforms() {
 
             {/* Items */}
             <div className='
-                lg:pr-8 lg: my-4 md:pb-[10rem] lg:pb-12 grid grid-cols-[repeat(auto-fit,minmax(343px,1fr))] 
-                place-items-center place-items-top lg:place-items-center gap-4
-                [@media(max-width:360px)]:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] 
+                grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4 pb-6 place-items-center my-4
             '>
                 {
                     uniforms.filter(item => {

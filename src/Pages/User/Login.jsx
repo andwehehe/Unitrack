@@ -49,6 +49,8 @@ function Login() {
         } else if (isAdmin) {
             setUserType("admin");
             navigateTo("Admin-Dashboard");
+        } else {
+            setError("Invalid email or password. Please try again.");
         }
     };
 
